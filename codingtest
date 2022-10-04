@@ -1,0 +1,81 @@
+[1차] 뉴스 클러스터링 - programmers practice for CodingTest
+
+import java.util.*;
+
+class Solution {
+    public int solution(String str1, String str2) {
+        int answer = 0;
+        str1 = str1.toLowerCase();
+        str2 = str2.toLowerCase();
+        ArrayList<String> list1 = new ArrayList<>();
+        ArrayList<String> list2 = new ArrayList<>();
+        ArrayList<String> inter = new ArrayList<>();
+        ArrayList<String> union = new ArrayList<>();
+        
+        HashMap<String, Integer> m1 = new HashMap<>();
+        HashMap<String, Integer> m2 = new HashMap<>();
+        
+        //집합 만들기
+        for(int i =0;i<str1.length()-1;i++){
+            String st = str1.substring(i,i+2);
+            int count = 0;
+            for(int j=0;j<st.length();j++){
+                if(st.charAt(j)>='a'&&st.charAt(j)<='z')count++;
+            }
+            if(count==2){
+                list1.add(st);
+            }
+        }
+        
+        for(int i =0;i<str2.length()-1;i++){
+            String st = str2.substring(i,i+2);
+            int count = 0;
+            for(int j=0;j<st.length();j++){
+                if(st.charAt(j)>='a'&&st.charAt(j)<='z')count++;
+            }
+            if(count==2){
+                list2.add(st);
+            }
+        }
+        if(list1.size()==0&&list2.size()==0)return answer = 1*65536;
+        else if(list1.size()==0||list2.size()==0)return answer = 0;
+        
+        //원소에 대한 개수 
+        for(int i=0;i<list1.size();i++){
+            m1.put(list1.get(i),m1.getOrDefault(list1.get(i),0)+1);
+        }
+        for(int i=0;i<list2.size();i++){
+            m2.put(list2.get(i),m2.getOrDefault(list2.get(i),0)+1);
+        }
+        
+        // ArrayList 복사
+        for(int i =0;i<list1.size();i++){
+            inter.add(list1.get(i));
+            union.add(list1.get(i));
+        }
+        
+        //교집합 
+        inter.retainAll(list2);
+        HashSet<String> interSet = new HashSet<>(inter);  // 원소가 2개 보다 넘어갈 경우 중복되어서 나오는 원소를 하나로 만들기위해 HashSet의 중복제거 특성을 사용
+        ArrayList<String> ninter = new ArrayList<>(interSet); //중복을 제거한 새로운 교집합 ArrayList
+        
+        //합집합
+        union.addAll(list2);
+        union.removeAll(ninter); //교집합을 제거한 이유 : 밑에서 max값을 구하는데 교집합을 사용했고 겹치지 않은 원소의 개수를 나중에 구해주기 위해
+        
+        int A = 0;
+        int B = 0;
+        
+        //교집합 원소를 이용해 AnB = min(A의 해당 원소의 개수, B의 해당 원소의 개수)
+        //교집합 원소를 이용해 AuB = max(A의 해당 원소의 개수, B의 해당 원소의 개수) + 합집합 원소의 개수
+        for(int i=0;i<ninter.size();i++){
+            A += Math.min(m1.get(ninter.get(i)),m2.get(ninter.get(i)));
+            B += Math.max(m1.get(ninter.get(i)),m2.get(ninter.get(i)));
+        }
+        
+        B += union.size();
+       
+        answer = (int)Math.floor((double)A/B*65536.0);
+        return answer;
+    }
+}
