@@ -1,0 +1,53 @@
+import java.util.*;
+
+class Solution {
+    public int[] solution(int N, int[] stages) {
+        int[] answer = {};
+        int[] arr = new int[N+1];   //스테이지에 머물러 있는 사람 수
+        Double[] result = new Double[N];  //스테이지별 실패율
+        int num = 0;
+        Map<Integer,Double> m = new HashMap<>();  //스테이지와 실패율의 관계 확인
+        ArrayList<Integer> stage = new ArrayList<>();  // 실패율이 큰 순 으로 스테이지 저장하기 위한 리스트 
+        
+        Arrays.fill(arr,0);
+        Arrays.fill(result,0.0);
+        
+        // 스테이지에 머물러 있는 사람 수를 측정
+        for(int i =0;i<stages.length;i++){
+            arr[stages[i]-1]+=1;
+        }
+        
+        // 실패율을 구하며 HashMap 으로 스테이지와 관계를 형성
+        for(int i =0;i<arr.length-1;i++){
+            if(stages.length-num!=0){
+                m.put(i+1,(double)arr[i]/(stages.length-num));
+            }else{
+                m.put(i+1,0.0);  // 스테이지>인원수 의 경우 0으로 나누어지는 예외를 처리하기위함
+            }
+            num+=arr[i];
+        }
+        
+        // 실패율을 저장하는 배열 (내림차순으로 정렬하기 위한 배열)
+        for(int i =0;i<m.size();i++){
+            result[i] = m.get(i+1);
+        }
+        Arrays.sort(result,Comparator.reverseOrder());
+        
+        // 내림차순으로 정렬된 배열에서 스테이지를 찾기위한 반복문, 실패율이 같을 경우 다른 스테이지를 저장하기 위한 조건문
+        for(int i =0;i<result.length;i++){
+            for(int j =0;j<m.size();j++){
+                if(result[i]==m.get(j+1)){
+                    if(!stage.contains(j+1))stage.add(j+1);
+                }
+            }
+        }
+        
+        // 정답
+        answer = new int[stage.size()];
+        for(int i=0;i<stage.size();i++){
+            answer[i]=stage.get(i);
+        }
+        
+        return answer;
+    }
+}
