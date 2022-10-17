@@ -28,12 +28,14 @@ public class Main {
 		while(true) {
 		
 			if(sum>=m) {
-				sum-=arr[start++];
+				sum-=arr[start];
+				start+=1;
 			}else if(end>=arr.length) {
 				break;
 			}
 			else{
-				sum+=arr[end++];
+				sum+=arr[end];
+				end+=1;
 			}
 			if(sum==m)cnt++;
 		}
