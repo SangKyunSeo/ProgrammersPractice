@@ -65,15 +65,17 @@ public class Main {
 				int ny = p.y + dy[i];
 				
 				if(nx>=0&&ny>=0&&nx<n&&ny<m) {
-					if(map[nx][ny]==0) {
-						if(!p.destroyed&&!visit[nx][ny][0]) {
+					if(map[nx][ny]==0) { //벽이 아닌데
+						
+						if(!p.destroyed&&!visit[nx][ny][0]) { // 벽을 부순적이 없다
 							q.add(new point(nx,ny,p.count+1,false));
 							visit[nx][ny][0]=true;
-						}else if(p.destroyed &&!visit[nx][ny][1]) {
+						}
+						else if(p.destroyed &&!visit[nx][ny][1]) { // 벽을 부순적이 있다
 							q.add(new point(nx,ny,p.count+1,true));
 							visit[nx][ny][1]=true;
 						}
-					}else if(map[nx][ny]==1) {
+					}else if(map[nx][ny]==1) { //벽을 만났는데 벽을 또 부수고 갈 수 없기에 벽을 부순적이 없다만 처리
 						if(!p.destroyed) {
 							q.add(new point(nx,ny,p.count+1,true));
 							visit[nx][ny][1]=true;
