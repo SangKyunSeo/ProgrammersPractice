@@ -1,0 +1,62 @@
+import java.util.*;
+
+class Solution {
+    public int[] solution(int[] fees, String[] records) {
+        int[] answer = {};
+        Map<String, Integer> map = new HashMap<>();  //차량번호별 요금
+        for(int i =0;i<records.length;i++){
+            map.put(records[i].substring(6,10),0);
+        }
+        int h = 0;  //출차 시간 분으로 계산
+        int m = 0;  //입차 시간 분으로 계산
+        int psum;   //주차시간
+        ArrayList<String> list = new ArrayList<>(); //입차정보 입력
+        
+        for(int i =0;i<records.length;i++){
+            psum=0;
+            if(records[i].contains("IN")){  //입차시 리스트 삽입
+                list.add(records[i]); 
+            }else if(records[i].contains("OUT")){  //출차시 차량번호 찾아서 주차시간 계산후 해쉬맵에 주차 시간 누적
+                    for(int j=0;j<list.size();j++){
+                        if(list.get(j).contains(records[i].substring(6,10))){
+                            h = Integer.parseInt(records[i].substring(0,2))*60+Integer.parseInt(records[i].substring(3,5));
+                            m = Integer.parseInt(list.get(j).substring(0,2))*60+Integer.parseInt(list.get(j).substring(3,5));
+                            psum=h-m;
+                            map.put(records[i].substring(6,10),map.getOrDefault(records[i].substring(6,10),0)+psum);
+                            list.remove(j);
+                        }
+                    }
+            }
+        }
+        
+        //입차만 있는경우
+        if(!list.isEmpty()){  
+            for(int i=0;i<list.size();i++){
+                psum=0;
+                h = 23-Integer.parseInt(list.get(i).substring(0,2));
+                m = 59-Integer.parseInt(list.get(i).substring(3,5));
+                psum=(h*60)+m;
+                map.put(list.get(i).substring(6,10),map.getOrDefault(list.get(i).substring(6,10),0)+psum);
+                list.remove(i);
+                i=-1;
+            }
+        }
+        
+        answer = new int[map.size()];
+        int idx = 0;
+        ArrayList<String> keyList = new ArrayList<>(map.keySet());  //차량번호 오름차순 정렬
+        keyList.sort((s1,s2)->s1.compareTo(s2));
+       
+        for(String key:keyList){
+            if(map.get(key)>fees[0]){
+                answer[idx] = fees[1]+(int)(Math.ceil((double)(map.get(key)-fees[0])/fees[2]))*fees[3];
+                idx++;
+            }else{
+                answer[idx]=fees[1];
+                idx++;
+            }
+        }
+        
+        return answer;
+    }
+}

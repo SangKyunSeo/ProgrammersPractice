@@ -1,0 +1,39 @@
+import java.util.*;
+
+class Solution {
+    public int[] solution(String msg) {
+        int[] answer = {};
+      
+        ArrayList<Integer>list = new ArrayList<>(); //인덱스 리스트
+        Map<String,Integer> m = new HashMap<>();   //사전
+        
+        // A~Z까지 1부터26의값으로 맵핑
+        for(int i =0;i<26;i++){
+            m.put(Character.toString((char)i+65),i+1);
+        }
+        
+         
+        for(int i =0;i<msg.length();i++){
+            int a = 1;
+            
+            // 사전에 포함되어있는 길이 2이상의 문자열을 찾고 그 이후 문자열을 가르킴
+            while(i+a<=msg.length() && m.containsKey(msg.substring(i,i+a))){
+                a++;
+            }
+            // 끝까지 갈경우 마지막 글자에 대한 인덱스를 찾음
+            if(i+a>msg.length()){
+                list.add(m.get(msg.substring(i)));
+                break;
+            }
+            // 사전에 없는 문자열을 사전에 추가해주고 그전까지의 문자열에 관한 인덱스를 리스트에 추가함
+            list.add(m.get(msg.substring(i,i+a-1)));
+            m.put(msg.substring(i,i+a),m.size()+1);
+            if(a>1)i+=a-2;  // 시작 문자를 찾음
+        }
+        answer = new int[list.size()];
+        for(int i =0;i<list.size();i++){
+            answer[i]=list.get(i);
+        }
+        return answer;
+    }
+}
