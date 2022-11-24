@@ -13,9 +13,9 @@ public class Main {
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		n = Integer.parseInt(br.readLine());
-		dp = new int[n+1][n+1];
+		dp = new int[n][n];
 		arr = new int[n];
-		for(int i=0;i<n+1;i++) {
+		for(int i=0;i<n;i++) {
 			Arrays.fill(dp[i],-1);
 		}
 		StringTokenizer st = new StringTokenizer(br.readLine());
