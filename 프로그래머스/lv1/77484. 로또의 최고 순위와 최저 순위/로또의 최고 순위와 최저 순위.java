@@ -23,20 +23,23 @@ class Solution {
             if(lottos[i]!=-1)max++;
         }
         
-        if(max==6)answer[0]=1;
-        else if(max==5)answer[0]=2;
-        else if(max==4)answer[0]=3;
-        else if(max==3)answer[0]=4;
-        else if(max==2)answer[0]=5;
-        else answer[0]=6;
+//         if(max==6)answer[0]=1;
+//         else if(max==5)answer[0]=2;
+//         else if(max==4)answer[0]=3;
+//         else if(max==3)answer[0]=4;
+//         else if(max==2)answer[0]=5;
+//         else answer[0]=6;
         
-        if(hit==6)answer[1]=1;
-        else if(hit==5)answer[1]=2;
-        else if(hit==4)answer[1]=3;
-        else if(hit==3)answer[1]=4;
-        else if(hit==2)answer[1]=5;
-        else answer[1]=6;
-
+//         if(hit==6)answer[1]=1;
+//         else if(hit==5)answer[1]=2;
+//         else if(hit==4)answer[1]=3;
+//         else if(hit==3)answer[1]=4;
+//         else if(hit==2)answer[1]=5;
+//         else answer[1]=6;
+        answer[0]=7-max;
+        answer[1]=7-hit;
+        if(answer[0]>=6)answer[0]=6;
+        if(answer[1]>=6)answer[1]=6;
         return answer;
     }
 }
