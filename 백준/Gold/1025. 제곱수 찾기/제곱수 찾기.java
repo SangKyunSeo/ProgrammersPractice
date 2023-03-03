@@ -2,14 +2,14 @@
 /*
  * 제곱수 찾기
  */
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 public class Main {
 
 	static int n,m;
-	static int[][] map;
-	static int result = Integer.MIN_VALUE;
+	static int map[][];
+	static int max = Integer.MIN_VALUE;
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -19,9 +19,8 @@ public class Main {
 		
 		for(int i=0;i<n;i++) {
 			String s = br.readLine();
-			char[] arr = s.toCharArray();
 			for(int j=0;j<m;j++) {
-				map[i][j]=Character.getNumericValue(arr[j]);
+				map[i][j] = Character.getNumericValue(s.charAt(j));
 			}
 		}
 		
@@ -31,34 +30,29 @@ public class Main {
 			}
 		}
 		
-		if(result==Integer.MIN_VALUE)System.out.println(-1);
-		else System.out.println(result);
-
+		if(max==Integer.MIN_VALUE)System.out.println(-1);
+		else System.out.println(max);
 	}
-	public static void solve(int i,int j) {
-		for(int k=-n;k<n;k++) {
-			for(int l=-m;l<m;l++) {
-				
-				if(k==0&&l==0)continue;
-				
-				int x = i;
-				int y = j;
+	public static void solve(int x,int y) {
+		for(int i=-n;i<n;i++) {
+			for(int j=-m;j<m;j++) {
+				int nx = x;
+				int ny = y;
 				int sqr = 0;
-				while(x>=0&&y>=0&&x<n&&y<m) {
-					sqr *=10;
-					sqr+=map[x][y];
-					
+				
+				if(i==0&&j==0)continue;
+				
+				while(nx>=0&&ny>=0&&nx<n&&ny<m) {
+					sqr *= 10;
+					sqr += map[nx][ny];
 					int root = (int)Math.sqrt(sqr);
+					if(Math.pow(root, 2)==sqr)max = Math.max(sqr, max);
 					
-					if(Math.pow(root, 2)==sqr) {
-						result = Math.max(result, sqr);
-					}
-					x+=k;
-					y+=l;
+					nx+=i;
+					ny+=j;
 				}
 			}
 		}
 	}
 
 }
-
