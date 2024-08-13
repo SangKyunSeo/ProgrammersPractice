@@ -1,38 +1,28 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
-
-import java.util.*;
-import java.io.*;
 public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int[] result = new int[3];
+        for(int i = 0; i < result.length; i++){
+            result[i] = Integer.parseInt(st.nextToken());
+        }
+        int e = 1;
+        int m = 1;
+        int s = 1;
+        int cnt = 1;
+        while(e != result[0] || s != result[1] || m != result[2]){
+            e = (e + 1) % 16 == 0 ? 1 : (e + 1) % 16;
+            s = (s + 1) % 29 == 0 ? 1 : (s + 1) % 29;
+            m = (m + 1) % 20 == 0 ? 1 : (m + 1) % 20;
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		int[] arr = new int[3];
-		int e=1;
-		int m=1;
-		int s=1;
-		
-		for(int i=0;i<3;i++) {
-			arr[i] = Integer.parseInt(st.nextToken());
-		}
-		
-		for(int year=1;;year++) {
-			if(arr[0]==e&&arr[1]==s&&arr[2]==m) {
-				System.out.println(year);
-				break;
-			}
-			e++;
-			m++;
-			s++;
-			if(e==16)
-				e=1;
-			if(s==29)
-				s=1;
-			if(m==20)
-				m=1;
-			
-		}
-		
-	}
+            cnt++;
+        }
+        System.out.println(cnt);
 
+    }
 }
