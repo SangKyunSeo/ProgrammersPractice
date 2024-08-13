@@ -3,12 +3,11 @@ import java.util.*;
 class Solution {
     public String solution(String s) {
         String answer = "";
-        
-        int arr[] = Arrays.stream(s.split(" ")).mapToInt(Integer::parseInt).toArray();
-        int max = Arrays.stream(arr).max().getAsInt();
-        int min = Arrays.stream(arr).min().getAsInt();
-        answer = min + " " + max;
-        
+        int[] numbers = Arrays.stream(s.split(" ")).mapToInt(Integer::parseInt).toArray();
+        Arrays.sort(numbers);
+        answer += numbers[0];
+        answer += " ";
+        answer += numbers[numbers.length - 1];
         return answer;
     }
 }
