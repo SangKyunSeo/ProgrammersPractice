@@ -1,37 +1,29 @@
 
-
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(br.readLine());
 
-	public static void main(String[] args) throws IOException{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		short num = Short.parseShort(br.readLine());
-		short n = 0;
-		
-		for(int i=0;i<num;i++) {
-			n = Short.parseShort(br.readLine());
-			int d[] = new int[n+1];
-			
-			d[0]=0;
-			d[1]=1;
-			if(n==2) {
-				d[2]=2;
-			}else if(n>=3) {
-				d[2]=2;
-				d[3]=4;
-				for(int j=4;j<=n;j++) {
-					d[j]=d[j-3]+d[j-2]+d[j-1];
-				}
-			}
-			
-			System.out.println(d[n]);
-			
-		}
-		
-		
-	}
-
+        while((t -= 1) >= 0){
+            int n = Integer.parseInt(br.readLine());
+            int map[] = new int[n+1];
+            if(n == 1){
+                System.out.println(1);
+            }else if(n == 2){
+                System.out.println(2);
+            }else{
+                map[0] = 1;
+                map[1] = 1;
+                map[2] = 2;
+                for(int i = 3; i <=n; i++){
+                    map[i] = map[i-3] + map[i-2] + map[i-1];
+                }
+                System.out.println(map[n]);
+            }
+        }
+    }
 }
