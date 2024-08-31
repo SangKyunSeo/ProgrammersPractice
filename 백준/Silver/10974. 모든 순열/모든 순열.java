@@ -1,41 +1,51 @@
-/*
- * 모든 순열
+/**
+ * Subject : BruteForce
+ * Problem Number : 10974
+ * Title : 모든 순열
+ * Solution Trial Date : 2024-08-31
  */
-import java.io.*;
-import java.util.*;
+
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-	static int n;
-	static int[] arr;
-	static boolean[] visit;
-	public static void main(String[] args) throws IOException{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		n = Integer.parseInt(br.readLine());
-		arr = new int[n];
-		visit = new boolean[n];
-		dfs(0);
-	}
-	public static void dfs(int depth) {
-		if(depth == n) {
-			for(int i=0;i<n;i++) {
-				if(visit[i]) {
-					System.out.print(arr[i] + " ");
-				}
-				
-			}
-			System.out.println();
-			return;
-		}
-		
-		for(int i=1;i<=n;i++) {
-			if(!visit[i-1]) {
-				visit[i-1]=true;
-				arr[depth] = i;
-				dfs(depth+1);
-				visit[i-1]=false;
-			}
-			
-		}
-	}
+    static boolean[] visit;
+    static int[] arr;
+    static StringBuilder sb = new StringBuilder();
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        visit = new boolean[n];
+        arr = new int[n];
+        sol(0, n);
+        System.out.println(sb);
+    }
+
+    public static void sol(int depth, int end){
+        if(depth == end){
+            printResult();
+        }
+
+        for(int i = 0; i < visit.length; i++){
+            if(!visit[i]){
+                visit[i] = true;
+                arr[depth] = i + 1;
+                sol(depth + 1, end);
+                visit[i] = false;
+            }
+        }
+    }
+
+    public static void printResult(){
+        for(int i : arr){
+            sb.append(i);
+            sb.append(" ");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("\n");
+    }
 
 }
