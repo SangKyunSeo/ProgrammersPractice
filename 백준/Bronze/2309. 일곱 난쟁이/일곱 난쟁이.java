@@ -2,50 +2,51 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
+/**
+ * 1. 이중 포문을 사용해 전체 탐색을 진행 할 수 있음
+ */
 public class Main {
-  static List<Integer> result = new ArrayList<>();
-  public static void main(String[] args) throws IOException{
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    int nums[] = new int[9];
-    int totalSum = 0;
-    for(int i = 0; i < 9 ; i++){
-      nums[i] = Integer.parseInt(br.readLine());
-      totalSum += nums[i];
-    }
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    find(0, 0, 2, nums, totalSum);
-    Collections.sort(result);
-    for(int i : result){
-      System.out.println(i);
-    }
-    
-  }
-
-  public static void find(int idx, int cnt, int end, int nums[], int totalSum){
-    if(cnt == end){
-      if(totalSum == 100){
-        for(int i = 0 ; i < nums.length; i++){
-          if(nums[i] != 0) result.add(nums[i]);
+        // 문제 입력부
+        int max = 9;
+        int numbers[] = new int[max];
+        int totalSum = 0;
+        for(int i = 0; i < max; i++){
+            int num = Integer.parseInt(br.readLine());
+            numbers[i] = num;
+            totalSum += num;
         }
-      }
-      return;
+
+        // 문제 솔루션 부
+        solution(numbers, totalSum, max);
     }
 
-    for(int i = idx; i < 9; i++){
-      if(result.size() == 7) return;
+    public static void solution(int[] numbers, int totalSum, int max){
+        int[] copyNumbers = numbers.clone();
+        for(int i = 0; i < max - 1; i++){
+            int subSum = numbers[i];
+            for(int j = i+1; j < max; j++){
+                subSum += numbers[j];
 
-      int temp = nums[i];
-      totalSum -= temp;
-      nums[i] = 0;
-      find(i + 1, cnt + 1, end, nums, totalSum);
+                if(totalSum - subSum == 100){
+                    copyNumbers[i] = -1;
+                    copyNumbers[j] = -1;
 
-      nums[i] = temp; 
-      totalSum += temp;
+                    Arrays.sort(copyNumbers);
+                    for(int item : copyNumbers){
+                        if(item == -1) continue;
+                        System.out.println(item);
+                    }
+                    return;
+                }
+                subSum -= numbers[j];
+            }
+        }
+        
     }
 
-  }
 }
