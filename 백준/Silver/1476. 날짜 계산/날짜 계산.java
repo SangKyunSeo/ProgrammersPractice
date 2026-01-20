@@ -4,28 +4,47 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+/**
+ * 각 숫자의 제한수 만큼 조건을 주어 계속 더하면서 값을 조정하는 방법이 있음
+ */
 public class Main {
-  public static void main(String[] args) throws IOException{
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    StringTokenizer st = new StringTokenizer(br.readLine());
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-    int e = Integer.parseInt(st.nextToken());
-    int s = Integer.parseInt(st.nextToken());
-    int m = Integer.parseInt(st.nextToken());
+        // 입력부 세팅
+        int E = Integer.parseInt(st.nextToken());
+        int S = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-    int es = 1;
-    int ss = 1;
-    int ms = 1;
-
-    int cnt = 0;
-    while(e != es || s != ss || m != ms){
-      cnt++;
-
-      es = (es + 1) % 16 == 0 ? 1 : (es + 1) % 16;
-      ss = (ss + 1) % 29 == 0 ? 1 : (ss + 1) % 29;
-      ms = (ms + 1) % 20 == 0 ? 1 : (ms + 1) % 20;
+        // 솔루션 부
+        solution(E, S, M);
     }
-    System.out.println(cnt + 1);
-  }
-  
+
+    private static void solution(int E, int S, int M){
+        int startE = 1;
+        int startS = 1;
+        int startM = 1;
+        int result = 1;
+
+        while(true){
+
+            // 조건 검색부
+            if(startE == E && startS == S && startM == M){
+                System.out.println(result);
+                return;
+            }
+
+            startE += 1;
+            startS += 1;
+            startM += 1;
+
+            startE = startE % 16 == 0 ? 1 : startE % 16;
+            startS = startS % 29 == 0 ? 1 : startS % 29;
+            startM = startM % 20 == 0 ? 1 : startM % 20;
+
+            result += 1;
+
+        }
+    }
 }
