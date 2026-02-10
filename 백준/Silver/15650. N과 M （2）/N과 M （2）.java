@@ -2,51 +2,70 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.nio.file.Paths;
 import java.util.StringTokenizer;
 
 public class Main {
-    static boolean visit[];
-    static int end;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
 
+    private static int[] map = null;
+    private static boolean[] visit = null;
+    private static int[] result = null;
+
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        // 입력부
+        StringTokenizer st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
+
+        map = new int[n];
         visit = new boolean[n];
-        end = m;
+        result = new int[m];
+
+        for(int i = 1; i <= n; i++) {
+            map[i-1] = i;
+        }
+
+        // 솔루션부
+        solution(n, m);
+    }
+
+    private static void solution(int n, int m){
 
         for(int i = 0; i < n; i++){
-            Arrays.fill(visit, false);
-            sol(i, 1);
+            result[0] = map[i];
+            visit[i] = true;
+            dfs(i, 1, n, m);
         }
     }
 
-    public static void sol(int idx, int depth){
-        visit[idx] = true;
-
+    private static void dfs(int index, int depth, int n, int end){
         if(depth == end){
-            printSol();
+            printResult();
             return;
         }
 
-        for(int i = idx+1; i < visit.length; i++){
+        for(int i = index; i < n; i++){
             if(!visit[i]){
-                sol(i, depth+1);
+                visit[i] = true;
+                result[depth] = map[i];
+                dfs(i, depth + 1, n, end);
                 visit[i] = false;
             }
         }
     }
 
-    public static void printSol(){
+    private static void printResult() {
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < visit.length; i++){
-            if(visit[i]){
-                sb.append(i+1).append(" ");
-            }
+
+        for(int i : result){
+            sb.append(i).append(" ");
         }
 
         System.out.println(sb.toString().trim());
     }
+
+
 }
